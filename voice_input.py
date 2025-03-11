@@ -21,7 +21,7 @@ def stream_decode(audio_buffer, sample_rate=16000):
 
 
 # 音频缓冲区和其他参数
-buffer_size = 16000  # 每个音频块的大小（1秒）
+buffer_size = 32000  # 每个音频块的大小（2秒）
 audio_buffer = np.zeros(buffer_size * 10, dtype=np.float32)  # 预留10秒缓冲区
 buffer_offset = 0
 silence_threshold = 0.7  # 声音门限
@@ -66,8 +66,9 @@ def callback(in_data, frame_count, time_info, status):
         # 如果检测到的音量低于门限，将缓冲区位置重置
         buffer_offset = 0
 
-    # 如果总时间超过 60 秒，停止程序
-    
+    # 如果总时间超过 30 秒，停止程序
+    if frame_count / 16000 > 30:
+        raise Exception("长时间录音，停止程序")
     return (in_data, pyaudio.paContinue)
 
 
