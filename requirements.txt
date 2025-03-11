@@ -1,0 +1,7 @@
+pyaudio
+wave
+whisper
+pyautogui
+pyperclip
+numpy
+torch
