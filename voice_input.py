@@ -24,11 +24,11 @@ def stream_decode(audio_buffer, sample_rate=16000):
 buffer_size = 16000  # 每个音频块的大小（1秒）
 audio_buffer = np.zeros(buffer_size * 10, dtype=np.float32)  # 预留10秒缓冲区
 buffer_offset = 0
-silence_threshold = 0.5  # 声音门限
+silence_threshold = 0.7  # 声音门限
 # 记录没有声音的时长（单位：秒）
 silence_duration = 0
 # 没有声音的最大时长，超过这个时长就停止程序
-max_silence_duration = 5
+max_silence_duration = 3
 
 
 # 麦克风回调函数
@@ -65,6 +65,9 @@ def callback(in_data, frame_count, time_info, status):
             raise Exception("长时间无声音，停止程序")  # 超过最大时长时抛出异常
         # 如果检测到的音量低于门限，将缓冲区位置重置
         buffer_offset = 0
+
+    # 如果总时间超过 60 秒，停止程序
+    
     return (in_data, pyaudio.paContinue)
 
 
